@@ -8,7 +8,7 @@ date: Dec 13 2022
 
 ## 文件管理
 
-### 目录结构
+### 文件目录
 bin:binaries
 
 boot:启动linux的核心文件，其中包括一些连接文件和镜像文件
@@ -41,21 +41,8 @@ var:存放各种不断变化的文件，如日志
 
 run:linux系统的工作日志，系统重启时，文件被清零。
 [想了解更多？点击这里](https://www.pathname.com/fhs/pub/fhs-2.3.html#PURPOSE31)
-### 文件属性
-文件属性包括 r(read), w(write)，x(execute)
-```bash
-ls -l #显示当前文件的属性或者目录所含所有文件的属性
-#一般为  rwxrwxrwx 中任意几个，如果没有某一个权限则以-替代，如 rwxr-x--x
-```
-为什么上面是有9个英文字母呢？是因为linux对不同的用户进行了分组，有主人--组员--其他用户的区别。
-举个栗子：假设你在开发一个项目，你是项目组长，那项目文件的权限你肯定拥有的最高，然后是和你一起完成这个项目的组员，最后可能是你这个项目产品的使用者，他们可能只有执行的权利。
 
-更改权限
-```
-
-```
 ### 目录操作
->关于相对目录与绝对
 下面这些是一些常用的命令行指令
 ```bash
 pwd #present working directory 列出当前文件所在目录
@@ -68,10 +55,47 @@ cd  #changing directories 改变目录，可以使用相对目录或者绝对目
 cd ~ #返回上一级目录
 cd #同上
 cd / #返回根目录
-cd .. 返回上一级目录
+cd .. #返回上一级目录
+
+ls -a #列出所有文件
+mkdir directoryname #make 创建目录
+rmdir directoryname #remove 删除目录
 
 ```
 
+### 文件操作
+
+```bash
+touch filename #在当前目录下创建文件，注意添加后缀
+cat > filename #create 同上
+echo > filename #同上
+rm filename #删除文件
+mv oldname newname #文件重命名
+```
+
+**也许上面的这些操作你一次不能记住，但是别着急，linux系统内置了说明书
+```bash
+man # +指令名称
+```
+
+### 文件属性
+
+文件属性包括 r(read), w(write)，x(execute)
+```bash
+ls -l #显示当前文件的属性或者目录所含所有文件的属性
+#一般为  rwxrwxrwx 中任意几个，如果没有某一个权限则以-替代，如 rwxr-x--x
+```
+为什么上面是有9个英文字母呢？是因为linux对不同的用户进行了分组，有主人--组员--其他用户的区别。
+举个栗子：假设你在开发一个项目，你是项目组长，那项目文件的权限你肯定拥有的最高，然后是和你一起完成这个项目的组员，最后可能是你这个项目产品的使用者，他们可能只有执行的权利。
+
+更改权限
+```bash
+#4，2， 1分别代表w r x三种权限，权限=7最大。
+chmod filename 753 # 三个数字分别代表三个级别用户的权限。
+```
+## 包管理
+ubuntu中使用npm进行管理
+这里建议使用
 
 
 
@@ -84,8 +108,7 @@ cd .. 返回上一级目录
 
 
 
-
-
+[https://www.tutorialspoint.com/unix/unix-file-management.htm](https://www.tutorialspoint.com/unix/unix-file-management.htm)
 
 (全文完)
 以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
