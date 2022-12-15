@@ -1,0 +1,66 @@
+---
+title: MySQL基础总结
+description: "MySQL基础总结"
+date: Dec 15 2022
+---
+**这是一篇总结，不是教程**
+# MySQl
+## 部署
+打开MySQL的命令行工具
+* mysql -u root -p
+* 输入密码
+## 日常增删查改
+```sql
+show databases; -- 展示当前所有的数据库
+USE dbname; --选择要操作的数据库
+SHOW TABLES; --看下数据库的大致内容，选择要操作的表
+--不清楚表的具体内容？用下面这个
+DESCRIBE tablename;
+```
+### 增
+```sql
+INSERT INTO tablename(c1,c2,...)
+VALUES (v1,v2,...);--也可以一次性添加多行，用,号隔开
+
+```
+### 查
+```sql
+SELECT 
+    select_list--筛选内容
+FROM
+    tablename--表名
+INNER JOIN tablename ON expression --如果可能还需要别的表
+WHERE
+    search_condition --初步筛选条件
+GROUP BY 
+    expression -- 如果有必要分组
+Having 
+    condition --检验成果
+
+```
+## 特殊需求
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(全文完)
+(本文不定时更新)
+以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
+
+如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
+ 
+我是gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+---
+---
+尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。
