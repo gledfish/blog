@@ -22,6 +22,13 @@ DESCRIBE tablename;
 INSERT INTO tablename(c1,c2,...)
 VALUES (v1,v2,...);--也可以一次性添加多行，用,号隔开
 
+UPDATE tablename SET content WHERE condition;--在表中满足条件的地方设置值
+```
+
+### 删
+```sql
+DELETE FROM tablename WHERE condition;--删除复合特定条件的值
+DELETE FROM tablename;--删除整个表
 ```
 ### 查
 ```sql
@@ -36,7 +43,24 @@ GROUP BY
     expression -- 如果有必要分组
 Having 
     condition --检验成果
+```
+```sql 
+REPLACE INTO tablename(col1,col2)
+VALUES(val1, val2);--一般第一个参数用于确定行位置
+```
+## 表管理
+```sql
+CREATE TABLE tablename(
+    columnname datatype data-config,
+) tabletype;-- 创建表
 
+RENAME TABLE old_table_name TO new_table_name;--重命名
+
+ALTER TABLE table_name DROP column_name;--删除列
+
+ALTER TABLE table ADD [COLUMN] column_name column_definition [FIRST|AFTER existing_colum_name];--在给定列之前或之后创建新列。
+
+DROP TABLE tablename;--删除列
 ```
 ## 特殊需求
 
@@ -52,9 +76,8 @@ Having
 
 
 
-
-
-(全文完)
+**参考链接**
+[https://www.mysqltutorial.org](https://www.mysqltutorial.org)
 (本文不定时更新)
 以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
 
