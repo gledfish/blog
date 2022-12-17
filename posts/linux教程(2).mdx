@@ -39,7 +39,7 @@ usr : unix shared resources ,unix内核的源文件
 
 var:存放各种不断变化的文件，如日志
 
-run:linux系统的工作日志，系统重启时，文件被清零。
+run:linux 系统的工作日志，系统重启时，文件被清零。
 [想了解更多？点击这里](https://www.pathname.com/fhs/pub/fhs-2.3.html#PURPOSE31)
 
 ### 目录操作
@@ -48,7 +48,7 @@ run:linux系统的工作日志，系统重启时，文件被清零。
 pwd #present working directory 列出当前文件所在目录
 cd  #changing directories 改变目录，可以使用相对目录或者绝对目录
 ```
->关于相对目录与绝对目录(假设你有一个嵌套目录是1/2/3/4/5,数字代表目录名，1代表根目录，当前你位于3目录。现在你要前往5目录，
+>关于相对目录与绝对目录(假设你有一个嵌套目录是 1/2/3/4/5,数字代表目录名，1 代表根目录，当前你位于 3 目录。现在你要前往 5 目录，
 >相对目录：cd 4/5
 >绝对目录：cd 1/2/3/4/5
 ```bash
@@ -67,13 +67,13 @@ rmdir directoryname #remove 删除目录
 
 ```bash
 touch filename #在当前目录下创建文件，注意添加后缀
-cat > filename #create 同上
+cat > filename # create 同上
 echo > filename #同上
 rm filename #删除文件
 mv oldname newname #文件重命名
 ```
 
-**也许上面的这些操作你一次不能记住，但是别着急，linux系统内置了说明书
+**也许上面的这些操作你一次不能记住，但是别着急，linux 系统内置了说明书
 ```bash
 man # （manual）+指令名称
 ```
@@ -85,7 +85,7 @@ man # （manual）+指令名称
 ls -l #显示当前文件的属性或者目录所含所有文件的属性
 #一般为  rwxrwxrwx 中任意几个，如果没有某一个权限则以-替代，如 rwxr-x--x
 ```
-为什么上面是有9个英文字母呢？是因为linux对不同的用户进行了分组，有主人--组员--其他用户的区别。
+为什么上面是有9个英文字母呢？是因为 linux 对不同的用户进行了分组，有主人--组员--其他用户的区别。
 举个栗子：假设你在开发一个项目，你是项目组长，那项目文件的权限你肯定拥有的最高，然后是和你一起完成这个项目的组员，最后可能是你这个项目产品的使用者，他们可能只有执行的权利。
 
 更改权限
@@ -96,7 +96,7 @@ chgrp groupname filename #改变文件所属的群组
 chown username filename #改变文件的拥有者
 ```
 ## 包管理
-ubuntu中使用npm进行管理，下面是一些常用的命令
+ ubuntu 中使用 np m进行管理，下面是一些常用的命令
 ![image.png](https://s2.loli.net/2022/12/14/IyjsHgE6xRqf1r9.png)
 
 但是，要让这些指令生效，你需要配置你的软件源（安装包的来源点），就像你要买东西，你得先找到商店一般。
@@ -148,7 +148,7 @@ sudo apt-get install build-essential
 
 如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
  
-我是gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+我是 gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
 ---
 ---
 尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。
