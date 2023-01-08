@@ -15,11 +15,11 @@ echo "hello, world!"
 # #! 后面是当前默认的命令行解析器
 #echo 打印 hello, world!并以标准形式输出
 ```
-父 shell 和子 shell
+**父 shell 和子 shell**
 
 在 shell 中再启动一个 shell 进程，则该进程为子 shell，另一个 Shell 为父Shell
 
-运行脚本
+**运行脚本**
 
 直接在当前shell 中运行：
 * source 目录/脚本名.sh 
@@ -40,7 +40,7 @@ set #查看所有变量
 
 系统变量在父/子 shell 中都可以访问，用户变量只在其定义中的 shell 中可以访问。 
 
-用户变量定义方法：
+**用户变量定义方法：**
 ```bash
 my_var=4
 readonly read_var=hello #只读变量
@@ -60,7 +60,7 @@ export my_var
 unset my_var 
 #不能 unset 只读变量
 ```
-特殊变量
+**特殊变量**
 * $0：获取脚本的名字
 
 * $1：获取第一个参数
