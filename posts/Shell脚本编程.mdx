@@ -9,11 +9,11 @@ Shell 是 Linux 系统中的命令解释器，可以将人理解的指令转换�
 
 ## 第一个 Shell 脚本
 ```bash
-'#'! /bin/sh
+#! /bin/sh
 echo "hello, world!"
 #这是一个注释
 # #!后面是当前默认的命令行解析器
-#echo 打印 hello, world!并以标准形式输出
+# echo 打印 hello, world!并以标准形式输出
 ```
 **父 shell 和子 shell**
 
@@ -22,10 +22,11 @@ echo "hello, world!"
 **运行脚本**
 
 直接在当前shell 中运行：
-* source 目录/脚本名.sh 
-* . 目录/脚本名.sh
+* source  目录/脚本名.sh 
+* .  目录/脚本名.sh
 创建子 shell 运行
-* ./脚本名.sh 
+* ./脚本名.sh * 注意 / 与脚本名之间不能有空格
+
 ## 变量
 变量分为系统变量和用户变量
 
@@ -209,19 +210,60 @@ do
 done 
 ```
 
+**while循环**
+```bash
+i=1
+while [ $i -lt $1]
+do 
+    echo $i
+done
+#i要在循环外初始化
+```
+
+## 读取用户输入
+```bash 
+read -t 10 -p "请输入姓名：" name
+echo $name 
+#read 读取用户输入
+# -t 指定等待输入的时间
+# -p 输入提示信息
+# 变量名 指定输入内容存储的变量
+```
+
+## 函数
+### 系统函数
+系统函数是系统预定义的函数，使用时可以直接调用。如：
+
+basename: 获取文件名
+
+dirname: 获取目录名
+
+在脚本中调用系统函数并获取结果
+```bash 
+command1=$(dirname)
+# $()获取 dirname 函数执行的结果并赋值给 command1
+```
+### 自定义函数
+
+```bash 
+function sum(){
+    sum=$[ $1 + $2 ]
+    echo $sum 
+    return $?
+}
+
+# function可以省略，但一般不省略。
+# 函数不需要形式参数，与脚本一致，使用位置参数
+# return 语句可加可不加,如果不加，系统会自动添加。
+
+# 调用函数
+add=$(sum 1 2)
+```
 
 
+**参考链接**
 
-
-
-
-
-
-
-
-
-
-
+[https://www.bilibili.com/video/BV1WY4y1H7d3?p=1&vd_source=f09fa21118f68e116e074e2f6b4e14e4](https://www.bilibili.com/video/BV1WY4y1H7d3?p=1&vd_source=f09fa21118f68e116e074e2f6b4e14e4)
 
 
 (全文完)
