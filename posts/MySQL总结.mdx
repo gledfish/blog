@@ -193,6 +193,7 @@ ON e.department_id = d.department_id
 * 等值连接和非等值连接
 * 内连接和外连接
 内连接：合并相同列
+
 外连接：合并所有列
 
 **难点：SQL99 标准实现 7 种外连接**
@@ -316,7 +317,7 @@ ORDER BY --展示顺序
 LIMIT --- 展示行数 
 ```
 
-**SELECT语句的执行顺序
+**SELECT语句的执行顺序**
 1. FROM ... JOIN ...  ON ...
 2. WHERE ... GROUP BY ... HAVING ...
 3. SELECT 
