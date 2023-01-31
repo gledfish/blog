@@ -399,6 +399,198 @@ HAVING AVG(salary) <= ALL(
     GROUP BY department_id
 );
 ```
+
+**关联子查询**
+```sql
+SELECT
+    e1.last_name,
+    e1.salary,
+    e1.department_id
+FROM employees e1
+WHERE e1.salary > (
+        SELECT AVG(e2.salary)
+        FROM employees e2
+        WHERE
+            e2.department_id = e1.department_id# e1 的department_id不同，结果不同。
+    );
+
+SELECT
+    e.last_name,
+    e.salary,
+    e.department_id
+FROM employees e, ( #在 FROM 语句中使用子查询
+        SELECT
+            department_id,
+            AVG(salary) avg_sal
+        FROM e
+        GROUP BY
+            department_id
+    ) t_dept_avg_sal
+WHERE
+    e.department_id = t_dept_avg_sal.department_id
+    AND e.salary > t_dept_avg_sal.avg_sal;
+
+SELECT employee_id, salary
+FROM employees e
+ORDER BY (
+        SELECT
+            department_name
+        FROM departments d
+        WHERE
+            e.department_id = d.department_id # order by 中使用
+    );
+
+SELECT * FROM job_history;
+
+SELECT
+    employee_id,
+    last_name,
+    job_id
+FROM employees e
+WHERE 2 <= (
+        SELECT COUNT(*)
+        FROM job_history j
+        WHERE
+            e.employee_id = j.employee_id
+    ); # WHERE 中的子查询
+
+/* EXISTS ADD NOT EXISTS */
+SELECT department_id, department_name
+FROM departments d
+WHERE EXISTS (
+    SELECT * 
+    FROM employees e
+    WHERE d.department_id = e.department_id # 如果不存在继续遍历d表，直到存在，结束语句
+);
+```
+
+## 数据库管理
+```sql
+create database mytest1;
+create database mytest2 character set 'gbk'
+
+create database if not exists mytest3 character set 'utf8mb4';-- 创建数据库（推荐）
+
+-- 管理数据库
+show databases;
+
+-- 切换数据库
+use mytest2;
+
+-- 查看当前数据库的表
+show tables;
+
+-- 查看当前使用的数据库
+select database() from dual;
+
+-- 查看指定数据库保存的数据表
+show tables from atguigudb;
+
+--  修改数据库
+--         一般使用中的数据库不会修改
+
+-- 更改字符集
+alter database mytest2 character set 'utf8mb4';
+-- 数据库名一般不会更改，除非复制表
+
+-- 删除数据库
+
+drop database mytest1;
+
+drop database if exists mytest2; --推荐方法
+drop database if exists mytest3;
+```
+
+**表管理**
+```sql
+/* 从零创建表 */
+CREATE TABLE IF NOT EXISTS myemp1(
+	id int,
+	emp_name varchar(15),
+	#必须指明最大长度
+	hire_date date
+);
+
+-- 基于现有表创建表，同时导入表中的数据
+CREATE TABLE IF NOT EXISTS myemp2
+AS
+SELECT *
+FROM
+	employees e;
+
+-- 修改表
+
+-- 添加字段
+ALTER TABLE myemp1 
+ADD salary double(10, 2) AFTER emp_name;
+DESC myemp1;
+
+-- 修改数据类型（一般不改），长度，默认值（略）
+ALTER TABLE myemp1
+MODIFY emp_name varchar(25) DEFAULT '佚名';
+
+-- 重命名字段
+ALTER TABLE myemp1 
+CHANGE salary monthly_salary double (10,2);
+
+-- 删除字段
+ALTER TABLE myemp1 
+DROP COLUMN salary;
+
+-- 重命名表
+RENAME TABLE myemp1 
+TO myemp3;
+
+DROP TABLE IF EXISTS myemp2, myemp3;
+-- 无法撤销
+SHOW tables;
+
+-- 清空表
+truncate TABLE myemp1; -- 不能回滚
+
+SET autocommit = FALSE;
+DELETE FROM TABLE myemp1; -- 可以回滚
+
+COMMIT;
+ROLLBACK;
+```
+
+**增加数据**
+```sql
+INSERT INTO emp1(id, salary, name)
+VALUES (3, 4500, 'shk'); -- 某字段未赋值时默认为NULl
+
+INSERT INTO emp1(id, salary, name)
+VALUES (
+	2, 3000, 'gled'
+),(
+	4, 6000, 'fish'
+); -- 添加多条数据
+
+INSERT INTO emp1(id, name, salary, hire_date)
+	SELECT employee_id, last_name, salary, hire_date 
+	FROM employees
+	WHERE department_id IN (60, 70);
+-- 将查询结果插入表中，字段要一一对应，且数据类型要统一         
+```
+
+**更新数据**
+```sql
+UPDATE emp1
+SET hire_date = curdate()
+WHERE id = 103;-- 更新一条数据
+
+UPDATE emp1
+SET hire_date = curdate(), salary = 6000
+WHERE id = 4; --更新多条数据
+```
+
+**删除数据**
+```sql
+DELETE FROM emp1 
+WHERE id = 103;
+```
+
 ## 特殊需求
 
 
