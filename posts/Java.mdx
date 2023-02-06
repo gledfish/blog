@@ -1,0 +1,253 @@
+---
+title: Java教程
+description: "Java面向对象"
+date: Feb 1 2023
+---
+# Java教程
+## 数组
+```java
+
+//    数组作为函数参数和函数返回值
+    public static int[] reverse(int[] list){
+        int[] result = new int[list.length];
+        for(int i = 0, j = result.length - 1; i < list.length; i++,j--)
+            result[j] = result[i];
+        return result;
+    }
+
+    int[] arr = new int[5]; //动态初始化
+    String[] arr1 = new String[]{
+                "Tom",
+                "Jerry",
+                "Jim"
+        };//静态初始化
+//        二维数组
+    int[][] arr2 = new int[4][3];
+    int[][] arr3 = new int[][]{
+                {1,2,3},
+                {4,5,6},
+                {7,8,9}
+        };
+
+        //Arrays工具类的使用
+//        1.判断数组是否相等
+    int[] arr4 = new int[]{1,2,3,4};
+    int[] arr5 = new int[]{1,2,3,4};
+    boolean isEquals = Arrays.equals(arr4, arr5);
+    System.out.println(isEquals);
+//        2.数组生成字符串
+    System.out.println(Arrays.toString(arr4));
+//        3.数组填充
+        int[] arr6 = new int[5];
+        Arrays.fill(arr6,10);//全填充
+        System.out.println(arr6[0]);
+//        4.数组排序
+        Arrays.sort(arr2);
+//        5.二分查找
+        int[] arr7 = new int[]{-98,-34,2,34,54,66,79,105,210,333};
+        int index = Arrays.binarySearch(arr7, 34);
+        System.out.println(index);
+```
+**数组常见错误**
+* 数组下标越界
+* 空指针异常
+```java
+        int[] arr1 = new int[]{1, 2, 3};
+        arr1 = null;
+        System.out.println(arr1[0]);//空指针报错
+
+        int[][] arr2 = new int[4][0];
+        System.out.println(arr2[0]);//null
+        System.out.println(arr2[0][0]);//空指针报错
+```
+## 类，对象，属性和方法
+**类的定义**
+```java
+class Person {//类的定义
+    //属性
+    String name;
+    int age = 1;
+    boolean isMale;
+
+    //方法
+    public void eat(){
+        System.out.println("吃饭");
+    }
+
+    public void talk(String language){
+        System.out.println("人可以说"+language);
+    }
+```
+**对象的创建**
+```java
+public static void main(String[] args) {
+        //创建对象
+        Person p1 = new Person();
+
+        //调用对象的属性
+        p1.name = "Tom";
+        p1.isMale = true;
+        System.out.println(p1.name);
+
+        //调用对象的方法
+        p1.eat();
+        p1.talk("English");
+        //方法的使用可以调用当前类的属性或方法
+
+        Person p2 = new Person();
+        //未赋值时，属性为默认值
+        System.out.println(p2.name);//null
+        System.out.println(p2.isMale);//false
+
+//将 p1 保存对象的地址赋值给 p3,导致 p3 和 p1 指向同一个地址
+        Person p3 = p1;
+        System.out.println(p3.name);//Tom
+        p3.age = 10;
+        System.out.println(p1.age);//10
+}
+```
+**属性和局部变量的对比**
+
+相同点：
+* 定义的格式相同：数据类型 变量名 = 变量值
+* 都是先声明后使用
+* 都有对应的作用域
+
+不同点
+* 声明的位置不同
+        
+        属性：直接定义在类的一对{}中
+        局部变量：声明在方法内，方法形参内，代码块内，构造器形参，构造器内部变量
+* 权限修饰符的不同
+
+        属性：可以在声明属性时，使用权限修饰符指明其权限。、
+        局部变量：不可以使用权限修饰符
+* 默认初始化值有区别
+
+        属性：类的属性根据类型有对应的默认值
+        局部变量：没有初始化值
+* 内存中加载的位置不同
+
+        属性：加载到堆空间中
+        局部变量：加载到栈空间
+
+**匿名对象**
+```java
+//匿名对象
+        //声明并一次性使用的对象
+        //用途：作为参数传入方法，简化参数传入
+        new Phone().sendEmail();
+        new Phone().playGame();
+```
+**方法重载**
+```java
+// 同一个类中，允许存在一个以上的同名方法，只要参数个数不同，或者参数数据类型不同。
+    // 跟方法的权限修饰符，返回值类型，形参变量名无关
+    public void getSum(int i, int j) {
+        System.out.println(i + j);
+    }
+
+    public void getSum(String i, int j) {//重载
+        System.out.println(i + j);
+    }
+
+   public int getSum(int i, int j){//不是重载，报错
+       System.out.println(i + j);
+   }
+```
+**可变参数**
+* 可变参数的格式：数据类型 ...  变量名
+* 传入的参数可以是：0个，1个，2个 ...
+* 可变参数与形参类型相同的数组之间不能共存
+* 可变参数必须声明在末尾
+* 一个方法最多声明一个可变形参
+
+**权限修饰符**
+* private 同一个类中可见
+* default 同一个包中可见
+* protected 同一个包中可见 + 不同包中的子类可见
+* public 同一个项目中可见
+__修饰类只能使用 default 和 public__
+
+**构造器**
+作用：创建对象，初始化属性
+
+
+定义构造器的方法：
+        权限修饰符 类名（形参列表）{}
+
+如果没有显式的定义类的构造器，系统默认提供一个空参的构造器
+构造器不属于方法
+可以定义多个构造器，彼此构成重载
+如果用户自定义构造器，则程序不使用默认构造器
+
+```java
+class Person{
+    String name;
+    int age;
+
+    public Person(String name,int age){
+        //code
+    }
+}
+```
+
+**this的使用**
+this 用来修饰**属性** **方法** **构造器**
+来区分变量命名的冲突，通常情况下可以省略。
+```java
+//在构造器中调用构造器
+public Person(int age){
+    this.age = age;
+}
+public Person(String name, int age){
+    this(age);//调用形参为int的构造器
+    this.name = name
+
+    //构造器不能调用自身
+    //构造器内部，最多只能声明一个"this(形参列表)"来调用其他的构造器
+}
+```
+## 封装
+体现1.封装属性
+
+```java
+private int legs;
+
+public void setLegs(int legs) {
+        if (legs >= 0) {
+            this.legs = legs;
+        }
+    }
+public int getLegs() {
+        return this.legs;
+    }
+    // 封装体现：将属性设置为私有，提供公有的方法来设置和获取属性。
+```
+## 继承
+## 多态
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(全文完)
+(本文不定时更新)
+以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
+
+如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
+ 
+我是gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+---
+---
+尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。
