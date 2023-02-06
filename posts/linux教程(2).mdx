@@ -1,0 +1,154 @@
+---
+title: linux教程（2）
+description: "这篇文章主要讲解linux的基本操作"
+date: Dec 13 2022
+---
+
+# linux 基本操作
+
+## 文件管理
+
+### 文件目录
+bin:binaries
+
+boot:启动linux的核心文件，其中包括一些连接文件和镜像文件
+
+dev:devices 存放linux的外部设备
+
+etc:Et cetera 存放系统管理所需要的配置文件和子目录
+
+home:存放各个用户，起初只有创建者这一个用户
+
+lib:libraries 存放着系统基本的共享库，类似于程序源代码中引入的外部文件
+
+media:一个后来引入的目录，挂载媒体设备
+
+mnt:mount挂载临时的文件系统，如光驱
+
+opt:额外安装软件的目录
+
+proc:存储当前linux内核运行状态的一系列特殊文件。是一种伪文件系统
+
+root:管理员的目录
+
+sys:新的文件系统，集成了下面3种文件系统的信息：针对进程信息的 proc 文件系统、针对设备的 devfs 文件系统以及针对伪终端的 devpts 文件系统。
+
+tmp:存放临时文件
+
+usr : unix shared resources ,unix内核的源文件
+
+var:存放各种不断变化的文件，如日志
+
+run:linux 系统的工作日志，系统重启时，文件被清零。
+[想了解更多？点击这里](https://www.pathname.com/fhs/pub/fhs-2.3.html#PURPOSE31)
+
+### 目录操作
+下面这些是一些常用的命令行指令
+```bash
+pwd #present working directory 列出当前文件所在目录
+cd  #changing directories 改变目录，可以使用相对目录或者绝对目录
+```
+>关于相对目录与绝对目录(假设你有一个嵌套目录是 1/2/3/4/5,数字代表目录名，1 代表根目录，当前你位于 3 目录。现在你要前往 5 目录，
+>相对目录：cd 4/5
+>绝对目录：cd 1/2/3/4/5
+```bash
+cd ~ #返回上一级目录
+cd #同上
+cd / #返回根目录
+cd .. #返回上一级目录
+
+ls -a #列出所有文件
+mkdir directoryname #make 创建目录
+rmdir directoryname #remove 删除目录
+
+```
+
+### 文件操作
+
+```bash
+touch filename #在当前目录下创建文件，注意添加后缀
+cat > filename # create 同上
+echo > filename #同上
+rm filename #删除文件
+mv oldname newname #文件重命名
+```
+
+**也许上面的这些操作你一次不能记住，但是别着急，linux 系统内置了说明书
+```bash
+man # （manual）+指令名称
+```
+
+### 文件属性
+
+文件属性包括 r(read), w(write)，x(execute)
+```bash
+ls -l #显示当前文件的属性或者目录所含所有文件的属性
+#一般为  rwxrwxrwx 中任意几个，如果没有某一个权限则以-替代，如 rwxr-x--x
+```
+为什么上面是有9个英文字母呢？是因为 linux 对不同的用户进行了分组，有主人--组员--其他用户的区别。
+举个栗子：假设你在开发一个项目，你是项目组长，那项目文件的权限你肯定拥有的最高，然后是和你一起完成这个项目的组员，最后可能是你这个项目产品的使用者，他们可能只有执行的权利。
+
+更改权限
+```bash
+#4，2， 1分别代表w r x三种权限，权限=7最大。
+chmod filename 753 # 三个数字分别代表三个级别用户的权限。
+chgrp groupname filename #改变文件所属的群组
+chown username filename #改变文件的拥有者
+```
+## 包管理
+ ubuntu 中使用 np m进行管理，下面是一些常用的命令
+![image.png](https://s2.loli.net/2022/12/14/IyjsHgE6xRqf1r9.png)
+
+但是，要让这些指令生效，你需要配置你的软件源（安装包的来源点），就像你要买东西，你得先找到商店一般。
+### 配置软件源
+第一步是将你原来的软件源的文件备份一下，避免新的配置失败又找不到原来的配置文件了
+
+第二步打开了软件源的配置文件
+![image.png](https://s2.loli.net/2022/12/14/SGdwHpR57oqbfXc.png)
+然后将下面的内容复制进文件并保存
+````
+deb http://mirrors.aliyun.com/ubuntu/ trusty main restricted universe multiverse 
+
+deb http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted universe multiverse 
+
+deb http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted universe multiverse 
+
+deb http://mirrors.aliyun.com/ubuntu/ trusty-proposed main restricted universe multiverse 
+
+deb http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse 
+
+deb-src http://mirrors.aliyun.com/ubuntu/ trusty main restricted universe multiverse 
+
+deb-src http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted universe multiverse 
+
+deb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted universe multiverse 
+
+deb-src http://mirrors.aliyun.com/ubuntu/ trusty-proposed main restricted universe multiverse 
+
+deb-src http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse
+```
+**上述链接截至发文时有效，一般情况下不会变动，如果失效，建议访问阿里源的官方网站**[https://developer.aliyun.com/mirror/ubuntu?spm=a2c6h.13651102.0.0.3e221b11yeIR50](https://developer.aliyun.com/mirror/ubuntu?spm=a2c6h.13651102.0.0.3e221b11yeIR50)
+最后输入以下命令更新软件源
+```
+sudo apt-get update
+
+sudo apt-get upgrade
+
+sudo apt-get install build-essential
+```
+参考链接
+
+[https://www.tutorialspoint.com/unix/unix-file-management.htm](https://www.tutorialspoint.com/unix/unix-file-management.htm)
+[https://www.tutorialspoint.com/unix/index.htm](https://www.tutorialspoint.com/unix/index.htm)
+[https://itsfoss.com/apt-command-guide](https://itsfoss.com/apt-command-guide)
+[https://m.yisu.com/ask/5735.html](https://m.yisu.com/ask/5735.html)
+(不定时更新)
+
+以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
+
+如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
+ 
+我是 gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+---
+---
+尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。

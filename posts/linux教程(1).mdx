@@ -1,0 +1,67 @@
+---
+title: Linux教程(1)
+description: "零基础Linux教程主要包括Linux系统的下载安装"
+date: Dec 13 2022
+---
+# Linux 基础教程
+## Linux 简介
+Linux 是一个操作系统，它具有以下特点
+* 由开源社区维护
+* 稳定
+* 功能多样（在服务器端尤为出色）
+* 跨平台
+
+## 挑选发行版
+发行版，可以简单理解为 Linux 操作系统 + 各种应用软件。根据使用场景的不同，软件应用也有所差别。同时，这些发行版又分为商业发行版和社区发行版。我个人使用的发行版是 Ubuntu,下面的讲解也是用的 Ubuntu。
+## Linux 系统的安装
+如果你使用的是个人电脑，你可以选择安装双系统，这时你原来的系统和 linux 系统是并列关系，两个系统你同时只能打开一个。如果要切换另一个，你需要重启，不是很方便。
+
+你也可以选择使用在虚拟机上安装 Linux 系统，这也是我比较推荐的，这种方法就像 Linux 是你的子系统一样，你可以随时开启，随时关闭。对于学习者来说是最好的。
+
+下面讲解安装步骤
+### 下载安装虚拟机
+我们选择的虚拟机是 VMware Workstation,[官网下载链接](https://customerconnect.vmware.com/cn/downloads/info/slug/desktop_end_user_computing/vmware_workstation_player/16_0)
+下载安装即可，这个虚拟机软件可以调配你电脑的资源来运行别的操作系统，我们这里用它运行 ubuntu。
+### 下载安装ubuntu
+[ubuntu下载链接](https://cn.ubuntu.com/download/desktop)
+下载完成之后，打开你的 VMware，点击创建新的虚拟机。
+![image.png](https://s2.loli.net/2022/12/13/QV5BGDbOqIfHeoy.png)
+点击浏览，选中刚才下载的 iso 文件
+>关于后缀名为 iso 的文件：iso 文件性质上类似于小时候我们买的碟片，里面
+>刻录着一些特殊文件。
+
+下一步，设置你的用户信息。全名是你这台虚拟机的昵称，作用不大。而用户名和密码决定了你能否进入该虚拟机，请谨慎输入。（然而默认情况下你的虚拟机是自动登录的，其实这个账号和密码也没有什么用。）
+![image.png](https://s2.loli.net/2022/12/13/c9eEtOAlwXiHfSs.png)
+下一步，输入虚拟机的名称和你希望它保存的位置。
+
+下一步，选择这台虚拟电脑的硬盘大小，你可以选择系统默认的大小，也可以根据实际情况放大或缩小。至于是否分盘，对于初学者而言是不需要的，但如果你有便捷性的需求，也可以分盘。
+
+下一步，你可以自定义你的 Linux 系统的硬件，内存和处理器可以根据个人情况进行增加和删除，但最好在系统推荐的数目以上，同时建议删除打印机。（因为极大概率用不到），对于虚拟化引擎的两个选项，建议都不要勾选，虚拟化引擎对主机有一定的要求，且如果勾选，打开虚拟机时容易报错。
+![image.png](https://s2.loli.net/2022/12/13/h3CEXSW8wpfxIAF.png)
+点击完成，安心等待。
+![image.png](https://s2.loli.net/2022/12/13/wXUi84BTaZPt36d.png)
+到这里，属于你的 linux 系统已经初具雏形了。接下来是配置你的 linux系统选择语言
+![image.png](https://s2.loli.net/2022/12/13/wXUi84BTaZPt36d.png)
+continue，选择系统附带额外内容，初学者建议选择默认选项，如果你喜欢自己把玩，也可以勾选第二个。
+![image.png](https://s2.loli.net/2022/12/13/d4HvLwkmVyXBCPc.png)
+continue，选择第一个。
+选择区域
+![image.png](https://s2.loli.net/2022/12/13/iER5FdlBTQn6bch.png)
+这里配置的是这个 linux 系统的账号信息，与上面的不同，上面配置的是虚拟机的信息
+![image.png](https://s2.loli.net/2022/12/13/ISuYnsE4RN5b1zB.png)
+continue,静静的等待安装完成。
+![image.png](https://s2.loli.net/2022/12/13/VlPKX6n3WyD7iBw.png)看到这个图标，说明你的 linux 系统已经安装完成了，再重启一下即可大功告成。
+
+## 参考链接
+[https://www.linux.org/threads/what-is-linux.4106](https://www.linux.org/threads/what-is-linux.4106)
+
+[https://ubuntu.com/tutorials/how-to-run-ubuntu-desktop-on-a-virtual-machine-using-virtualbox#1-overview](https://ubuntu.com/tutorials/how-to-run-ubuntu-desktop-on-a-virtual-machine-using-virtualbox#1-overview)
+
+(全文完)
+以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
+
+如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
+ 
+我是 gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+
+尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。
