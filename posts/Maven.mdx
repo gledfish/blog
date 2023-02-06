@@ -1,0 +1,118 @@
+---
+title: Maven
+description: "Maven 教程"
+date: Feb 2 2023
+---
+
+# Maven
+## Maven的简介
+* 作为依赖管理工具
+* 作为项目构建工具
+## Maven配置
+cd Maven解压目录/conf
+打开 settings.xml
+**配置Maven本地仓库**
+```xml 
+<!-- 配置 Maven 本地仓库-->
+<!-- localRepository
+   | The path to the local repository maven will use to store artifacts.
+   |
+   | Default: ${user.home}/.m2/repository
+  <localRepository>/path/to/local/repo</localRepository>
+  -->
+  <localRepository>Maven-repository</localRepository>
+```
+**配置镜像仓库**
+```xml
+<mirrors>
+    <mirror>
+      <id>nexus-aliyun</id>
+      <mirrorOf>central</mirrorOf>
+      <name>Nexus aliyun</name>
+      <url>https://maven.aliyun.com/nexus/content/groups/public</url>
+    </mirror>
+</mirrors>
+```
+**配置jdk版本
+```xml
+ <profile>
+      <id>jdk-1.8</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <maven.compiler.source>
+          1.8
+        </maven.compiler.source>
+        <maven.compiler.target>
+          1.8
+        </maven.compiler.target>
+        <maven.compiler.compilerVersion>
+          1.8
+        </maven.compiler.compilerVersion>
+      </properties>
+    </profile>
+  </profiles>
+```
+**配置环境变量
+* MAVEN_HOME
+* path
+## Maven
+**使用Maven坐标定位工程**
+* groupid：公司或组织域名的倒序，通常会加上项目的名称
+* artifactid：模块的名称，将来作为Maven工程名
+* version：版本号
+**创建Maven工程**
+mvn archetype:generate
+* mvn:调用的程序
+* archetype:调用的插件
+* generate:使用的插件功能
+
+## POM
+Project Object Model：项目对象模型
+
+将工程抽象为一个模型，再用程序中的对象来描述这个模型。体现在pom.xml中
+
+## Maven目录结构
+项目名
+    src
+        main
+            java    
+                com package目录
+                resources配置文件
+    test
+        Java
+            com package目录
+## Maven 命令
+mvn -v 命令和构建操作无关，在任何目录都可以进行
+而构建相关命令要在pom.xml所在目录下运行。
+* mvn compile 编译主程序源码，结果存放在生成的target目录中
+* mvn test 编译测试程序，结果存放在生成的target目录中
+* mvn clean 删除target目录
+* mvn package 打包程序至target目录中
+* mvn install 将本地构建过程中生成的jar包存入Maven本地仓库
+
+## 测试
+
+
+
+
+
+
+
+
+
+
+
+
+(全文完)
+(本文不定时更新)
+以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
+
+如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
+ 
+我是gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+---
+---
+尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。
