@@ -82,3 +82,74 @@ WHERE department_id = 90;
 ```
 
 **SQL 在 Windows 上不区分大小写，但是标准SQL语言仍然区分大小写**
+## 运算符
+ 
+**算数运算符**
+特殊情况:
+
+* SELECT 100 + '1' FROM DUAL; -- 101
+* SELECT 100 + 'a' FROM DUAL; -- 100
+* SELECT 100 + NULL; -- NULL
+* SELECT 100 / 0; -- NULL
+
+**比较运算符** 
+* = : 等于
+* <=> :强等于,适用于有NULL值参与的情况
+* != : 不等于
+* <> :强不等于，适用于有NULL值参与的情况
+
+**比较运算关键字**
+```sql 
+-- IS NULL / IS NOT NULL / ISNULL 
+SELECT * 
+FROM employees
+WHERE salary IS NOT NULL;
+
+-- LEAST() / GREATEST()
+SELECT LEAST(first_name, last_name)
+FROM employees;
+
+-- BETWEEN AND 
+SELECT employee_id, last_name,salary
+FROM employees
+WHERE salary BETWEEN 6000 AND 8000;
+--WHERE salary >= 6000 && salary <= 8000
+
+--IN / NOT IN 
+SELECT last_name, salary, department_id
+FROM employees
+WHERE department_id IN (10, 20, 30);
+
+-- LIKE 模糊查找
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '%a%';
+
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '%a%e%' OR last_name LIKE '%e%a%';
+
+-- 占位符：_
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '_a%';
+
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '_\_a%'
+-- 转义_ ： \_
+```
+
+**逻辑运算符**
+* AND
+* OR
+* NOT
+* XOR 异或
+```sql
+select 2 AND 0; -- 0
+select 2 OR 0；--1
+select NOT 1; -- 0
+select 1 XOR 1; --0
+select 0 XOR 0; -- 0
+select 1 XOR 0; -- 1
+```
