@@ -80,7 +80,6 @@ FROM employees;
 SELECT * FROM employees
 WHERE department_id = 90;
 ```
-
 **SQL 在 Windows 上不区分大小写，但是标准SQL语言仍然区分大小写**
 ## 运算符
  
@@ -136,7 +135,7 @@ WHERE last_name LIKE '_a%';
 
 SELECT last_name
 FROM employees
-WHERE last_name LIKE '_\_a%'
+WHERE last_name LIKE '_\_a%';
 -- 转义_ ： \_
 ```
 
@@ -146,10 +145,10 @@ WHERE last_name LIKE '_\_a%'
 * NOT
 * XOR 异或
 ```sql
-select 2 AND 0; -- 0
-select 2 OR 0；--1
-select NOT 1; -- 0
-select 1 XOR 1; --0
-select 0 XOR 0; -- 0
-select 1 XOR 0; -- 1
+SELECT 2 AND 0; -- 0
+SELECT 2 OR 0;--1
+SELECT NOT 1; -- 0
+SELECT 1 XOR 1; --0
+SELECT 0 XOR 0; -- 0
+SELECT 1 XOR 0; -- 1
 ```
