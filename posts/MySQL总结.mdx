@@ -1,0 +1,618 @@
+---
+title: MySQL 基础总结
+description: "MySQL 基础总结"
+date: Dec 15 2022
+---
+
+# MySQl
+## 简介
+MySQL：数据库管理系统
+
+SQL：结构化数据查询语言
+**数据库分类** 
+关系型数据库
+
+典型数据形式：表
+
+非关系型数据库
+
+典型数据形式：键值型，文档型，搜索型，图类型
+
+**表记录之间的关系**
+* 一对一
+* 一对多
+* 多对多
+* 自我引用
+
+## 部署
+打开 MySQL 的命令行工具
+* mysql -u root -p
+* 输入密码
+
+**导入数据**
+进入被导入数据的数据库，设定好字符集，然后使用以下命令进行导入。
+
+source 文件目录
+
+## 概览数据库
+```sql
+SHOW databases; -- 展示当前所有的数据库
+USE dbname; --选择要操作的数据库
+SHOW TABLES; --浏览数据库的大致内容，选择要操作的表
+DESCRIBE tablename; # 查看表的内容
+DESC tablename;
+```
+
+**SQL语句分类**
+* DDL:数据定义语言。CREATE ALTER RENAME DROP TRUNCATE
+* DML:数据操作语言。INSERT DELETE UPDATE SELECT
+* DCL:数据控制语言。COMMIT ROLLBACK SAVEPOINT GRANT REVOKE
+
+## SELECT语句
+```sql
+SELECT * FROM employees; -- 查询表中所有列名
+SELECT employee_id, last_name, salary FROM employees; -- 查询选中列
+SELECT employee_id AS emp_id, 
+       last_name AS lname, 
+       department_id "dept name"
+-- 不要使用''
+FROM employees;-- 使用 AS 将列名缩写 
+
+SELECT * FROM `order`; -- 如果表名和关键字重复，使用反引号进行修饰。
+
+SELECT '尚硅谷', employee_id, last_name
+FROM employees; -- 查询常数用单引号
+```
+
+**去除重复行**
+```sql 
+SELECT DISTINCT department_id FROM employees;
+
+SELECT salary, DISTINCT department_id -- 错误
+FROM employees;
+
+SELECT DISTINCT salary, department_id --正确但是意义不大，双重去重
+FROM employees;
+```
+
+**WHERE条件判断**
+```sql 
+SELECT * FROM employees
+WHERE department_id = 90;
+```
+
+**SQL 在 Windows 上不区分大小写，但是标准SQL语言仍然区分大小写**
+
+## 运算符
+ 
+**算数运算符**
+特殊情况:
+
+* SELECT 100 + '1' FROM DUAL; -- 101
+* SELECT 100 + 'a' FROM DUAL; -- 100
+* SELECT 100 + NULL; -- NULL
+* SELECT 100 / 0; -- NULL
+
+**比较运算符** 
+* = : 等于
+* <=> :强等于,适用于有NULL值参与的情况
+* != : 不等于
+* <> :强不等于，适用于有NULL值参与的情况
+
+**比较运算关键字**
+```sql 
+-- IS NULL / IS NOT NULL / ISNULL 
+SELECT * 
+FROM employees
+WHERE salary IS NOT NULL;
+
+-- LEAST() / GREATEST()
+SELECT LEAST(first_name, last_name)
+FROM employees;
+
+-- BETWEEN AND 
+SELECT employee_id, last_name,salary
+FROM employees
+WHERE salary BETWEEN 6000 AND 8000;
+--WHERE salary >= 6000 && salary <= 8000
+
+--IN / NOT IN 
+SELECT last_name, salary, department_id
+FROM employees
+WHERE department_id IN (10, 20, 30);
+
+-- LIKE 模糊查找
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '%a%';
+
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '%a%e%' OR last_name LIKE '%e%a%';
+
+-- 占位符：_
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '_a%';
+
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '_\_a%'
+-- 转义_ ： \_
+```
+
+**逻辑运算符**
+* AND
+* OR
+* NOT
+* XOR 异或
+```sql
+select 2 AND 0; -- 0
+select 2 OR 0；--1
+select NOT 1; -- 0
+select 1 XOR 1; --0
+select 0 XOR 0; -- 0
+select 1 XOR 0; -- 1
+```
+## 数据整理与排序
+
+**ORDER BY** 
+```sql
+SELECT employee_id, salary, department_id
+FROM employees
+ORDER BY department_id DESC, salary ASC;
+-- 默认为升序排序， DESC 指定降序排序
+-- 列的别名只能在 ORDER BY 中使用，不能在 WHERE 中使用。因为 WHERE 和别名在同一条语句，而ORDER BY 在之后的语句
+```
+
+**分页**
+```sql 
+SELECT employee_id, last_name
+FROM employees
+LIMIT 1, 20;-- 设置偏移量为 1，即从第二个数据开始查看，每页显示20行
+-- LIMIT 20 OFFSET 1， MYSQL8.0 新特性
+```
+
+## 多表查询
+```sql 
+/* SQL92 标准实现内连接 */
+SELECT emp.employee_id, 
+       dept.department_name, 
+       emp.department_id
+-- 多个表中同时存在的字段，必须指明表来源
+-- 建议多表查询指明所有的表来源
+-- 使用别名优化可读性
+-- 一旦给表起了别名，则必须使用别名
+FROM employees emp, departments dept
+WHERE emp.department_id = dept.department_id;-- 连接条件：等值连接
+-- WHERE emp.department_id > dept.department_id; -- 非等值连接
+
+/* SQL99标准实现内连接 */
+SELECT last_name, department_name
+FROM employees e 
+JOIN departments d
+ON e.department_id = d.department_id
+```
+**连接条件**
+
+* 自连接和非自连接
+* 等值连接和非等值连接
+* 内连接和外连接
+内连接：合并相同列
+
+外连接：合并所有列
+
+**难点：SQL99 标准实现 7 种外连接**
+```sql
+/* 内连接 */
+SELECT employee_id, department_name
+FROM employees e 
+JOIN departments d 
+ON e.department_id = d.department_id;
+
+/* 左外连接 */
+SELECT
+    employee_id,
+    department_name
+FROM employees e
+    LEFT JOIN departments d ON e.department_id = d.department_id;
+
+/* 右外连接 */
+SELECT
+    employee_id,
+    department_name
+FROM employees e
+    RIGHT JOIN departments d ON e.department_id = d.department_id;
+
+/* 满外连接 */
+SELECT employee_id, department_name
+FROM employees e LEFT JOIN departments d 
+ON e.department_id = d.department_id
+UNION ALL
+SELECT
+    employee_id,
+    department_name
+FROM employees e
+    RIGHT JOIN departments d ON e.department_id = d.department_id
+WHERE e.department_id IS NULL;
+```
+
+## 函数
+### 内置函数
+
+**数值函数**
+```sql
+SELECT ABS(-123),
+PI(), 
+SIGN(-1), 
+CEIL(32.3), 
+FLOOR(2.5), 
+MIN(2, 4), 
+MAX(2, 4)
+FROM DUAL;
+
+SELECT RAND(), 
+RAND(10), 
+RAND(-1),
+FROM DUAL;
+
+SELECT ROUND(123.456, 2), 
+ROUND(123.4, 1), 
+ROUND(123.456, -1),
+TRUNCATE(123.456, -2)
+FROM DUAL;
+```
+
+**字符串函数**
+MYSQL 中字符串是从下标 1 开始。
+
+**日期和时间函数**
+```sql 
+SELECT 
+CURDATE(), -- 返回当前日期
+CURTIME(), -- 返回当前时间
+NOW() --返回当前日期和时间
+```
+**信息函数**
+```sql  
+SELECT 
+VERSION(), --返回当前MYSQL的版本号
+CONNECTION_ID() --返回当前MYSQL服务器的连接数
+DATABASE(), --返回当前数据库
+USER(), --返回当前的用户名，格式为 主机名@用户名
+```
+
+
+### 聚合函数
+对数据进行汇总的函数，输入一组数据的集合，输出的是单个值
+
+```sql
+SELECT 
+AVG(), 
+SUM(),
+MAX(),
+MIN(),
+COUNT()
+FROM DUAL;
+```
+
+**在筛选条件中使用聚合函数** 
+```sql
+SELECT department_id, MAX(salary)
+FROM employees
+WHERE department_id IN (10, 20, 30, 40)
+GROUP BY department_id
+HAVING MAX(salary) > 10000;
+```
+注意事项
+* 在有分组语句情况下，使用 HAVING
+* WHERE 筛选没有聚合函数的条件，HAVING 筛选有聚合函数的条件
+* HAVING 筛选 GROUP BY 分组后的数据
+
+## 查询语句的总结
+**SELECT语句的完整结构**
+```sql
+SELECT --(可能存在聚合函数)
+FROM --主表 
+JOIN --从表 ON  连接条件 
+WHERE --不包含聚合函数的过滤条件
+GROUP BY --分组 
+HAVING --包含聚合函数的过滤条件 
+
+ORDER BY --展示顺序
+LIMIT --- 展示行数 
+```
+
+**SELECT语句的执行顺序**
+1. FROM ... JOIN ...  ON ...
+2. WHERE ... GROUP BY ... HAVING ...
+3. SELECT 
+4. ORDER BY ... LIMIT ...
+
+## 子查询
+子查询类似于 for 循环，即嵌套查询
+
+```sql
+SELECT last_name, salary
+FROM employees
+WHERE salary > (
+    SELECT salary
+    FROM employees
+    WHERE last_name = 'Abel'
+); -- 单行子查询
+```
+子查询的分类
+
+单行子查询 和 多行子查询
+相关子查询 和 非相关子查询
+
+**单行子查询**
+```sql
+SELECT employee_id, manager_id, department_id
+FROM employees
+WHERE manager_id =  (
+    SELECT manager_id
+    FROM employees
+    WHERE employee_id = 141
+) AND department_id = (
+    SELECT department_id
+    FROM employees
+    WHERE employee_id =141
+) AND employee_id <> 141;
+
+SELECT employee_id, last_name, 
+(CASE department_id 
+WHEN (
+    SELECT department_id
+    FROM departments
+    WHERE location_id = 1800)
+THEN 'Canada' 
+ELSE 'USA' END
+)  "location"
+FROM employees;
+```
+
+**多行子查询**
+
+```sql
+/* 
+IN 等于列表中的任意一个
+ANY 和列表中的某一个值比较
+ALL 和子查询返回的所有值比较
+SOME 同ANY */
+
+SELECT employee_id, last_name
+FROM employees
+WHERE salary IN (
+    SELECT MIN(salary)
+    FROM employees
+    GROUP BY department_id
+);
+
+SELECT employee_id, last_name, job_id, salary
+FROM employees
+WHERE job_id <> 'IT_PROG'
+AND salary < ANY (
+    SELECT salary
+    FROM employees
+    WHERE job_id = 'IT_PROG');
+
+SELECT department_id
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) <= ALL(
+    SELECT AVG(salary) avg_sal
+    FROM employees
+    GROUP BY department_id
+);
+```
+
+**关联子查询**
+```sql
+SELECT
+    e1.last_name,
+    e1.salary,
+    e1.department_id
+FROM employees e1
+WHERE e1.salary > (
+        SELECT AVG(e2.salary)
+        FROM employees e2
+        WHERE
+            e2.department_id = e1.department_id# e1 的department_id不同，结果不同。
+    );
+
+SELECT
+    e.last_name,
+    e.salary,
+    e.department_id
+FROM employees e, ( #在 FROM 语句中使用子查询
+        SELECT
+            department_id,
+            AVG(salary) avg_sal
+        FROM e
+        GROUP BY
+            department_id
+    ) t_dept_avg_sal
+WHERE
+    e.department_id = t_dept_avg_sal.department_id
+    AND e.salary > t_dept_avg_sal.avg_sal;
+
+SELECT employee_id, salary
+FROM employees e
+ORDER BY (
+        SELECT
+            department_name
+        FROM departments d
+        WHERE
+            e.department_id = d.department_id # order by 中使用
+    );
+
+SELECT * FROM job_history;
+
+SELECT
+    employee_id,
+    last_name,
+    job_id
+FROM employees e
+WHERE 2 <= (
+        SELECT COUNT(*)
+        FROM job_history j
+        WHERE
+            e.employee_id = j.employee_id
+    ); # WHERE 中的子查询
+
+/* EXISTS ADD NOT EXISTS */
+SELECT department_id, department_name
+FROM departments d
+WHERE EXISTS (
+    SELECT * 
+    FROM employees e
+    WHERE d.department_id = e.department_id # 如果不存在继续遍历d表，直到存在，结束语句
+);
+```
+
+## 数据库管理
+```sql
+create database mytest1;
+create database mytest2 character set 'gbk'
+
+create database if not exists mytest3 character set 'utf8mb4';-- 创建数据库（推荐）
+
+-- 管理数据库
+show databases;
+
+-- 切换数据库
+use mytest2;
+
+-- 查看当前数据库的表
+show tables;
+
+-- 查看当前使用的数据库
+select database() from DUAL;
+
+-- 查看指定数据库保存的数据表
+show tables from atguigudb;
+
+--  修改数据库
+--         一般使用中的数据库不会修改
+
+-- 更改字符集
+alter database mytest2 character set 'utf8mb4';
+-- 数据库名一般不会更改，除非复制表
+
+-- 删除数据库
+
+drop database mytest1;
+
+drop database if exists mytest2; --推荐方法
+drop database if exists mytest3;
+```
+
+**表管理**
+```sql
+/* 从零创建表 */
+CREATE TABLE IF NOT EXISTS myemp1(
+	id int,
+	emp_name varchar(15),
+	#必须指明最大长度
+	hire_date date
+);
+
+-- 基于现有表创建表，同时导入表中的数据
+CREATE TABLE IF NOT EXISTS myemp2
+AS
+SELECT *
+FROM
+	employees e;
+
+-- 修改表
+
+-- 添加字段
+ALTER TABLE myemp1 
+ADD salary double(10, 2) AFTER emp_name;
+DESC myemp1;
+
+-- 修改数据类型（一般不改），长度，默认值（略）
+ALTER TABLE myemp1
+MODIFY emp_name varchar(25) DEFAULT '佚名';
+
+-- 重命名字段
+ALTER TABLE myemp1 
+CHANGE salary monthly_salary double (10,2);
+
+-- 删除字段
+ALTER TABLE myemp1 
+DROP COLUMN salary;
+
+-- 重命名表
+RENAME TABLE myemp1 
+TO myemp3;
+
+DROP TABLE IF EXISTS myemp2, myemp3;
+-- 无法撤销
+SHOW tables;
+
+-- 清空表
+truncate TABLE myemp1; -- 不能回滚
+
+SET autocommit = FALSE;
+DELETE FROM TABLE myemp1; -- 可以回滚
+
+COMMIT;
+ROLLBACK;
+```
+
+**增加数据**
+```sql
+INSERT INTO emp1(id, salary, name)
+VALUES (3, 4500, 'shk'); -- 某字段未赋值时默认为NULl
+
+INSERT INTO emp1(id, salary, name)
+VALUES (
+	2, 3000, 'gled'
+),(
+	4, 6000, 'fish'
+); -- 添加多条数据
+
+INSERT INTO emp1(id, name, salary, hire_date)
+	SELECT employee_id, last_name, salary, hire_date 
+	FROM employees
+	WHERE department_id IN (60, 70);
+-- 将查询结果插入表中，字段要一一对应，且数据类型要统一         
+```
+
+**更新数据**
+```sql
+UPDATE emp1
+SET hire_date = curdate()
+WHERE id = 103;-- 更新一条数据
+
+UPDATE emp1
+SET hire_date = curdate(), salary = 6000
+WHERE id = 4; --更新多条数据
+```
+
+**删除数据**
+```sql
+DELETE FROM emp1 
+WHERE id = 103;
+```
+
+## 特殊需求
+
+
+
+**参考链接**
+[https://www.mysqltutorial.org](https://www.mysqltutorial.org)
+
+[https://www.bilibili.com/video/BV1iq4y1u7vj/?spm_id_from=333.337.search-card.all.click&vd_source=f09fa21118f68e116e074e2f6b4e14e4](https://www.bilibili.com/video/BV1iq4y1u7vj/?spm_id_from=333.337.search-card.all.click&vd_source=f09fa21118f68e116e074e2f6b4e14e4)
+
+(本文不定时更新)
+以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
+
+如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
+ 
+我是gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+---
+---
+尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。
