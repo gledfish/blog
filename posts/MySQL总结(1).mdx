@@ -42,3 +42,43 @@ SHOW TABLES; --浏览数据库的大致内容，选择要操作的表
 DESCRIBE tablename; # 查看表的内容
 DESC tablename;
 ```
+
+**SQL语句分类**
+* DDL:数据定义语言。CREATE ALTER RENAME DROP TRUNCATE
+* DML:数据操作语言。INSERT DELETE UPDATE SELECT
+* DCL:数据控制语言。COMMIT ROLLBACK SAVEPOINT GRANT REVOKE
+
+## SELECT语句
+```sql
+SELECT * FROM employees; -- 查询表中所有列名
+SELECT employee_id, last_name, salary FROM employees; -- 查询选中列
+SELECT employee_id AS emp_id, 
+       last_name AS lname, 
+       department_id "dept name"
+-- 不要使用''
+FROM employees;-- 使用 AS 将列名缩写 
+
+SELECT * FROM `order`; -- 如果表名和关键字重复，使用反引号进行修饰。
+
+SELECT '尚硅谷', employee_id, last_name
+FROM employees; -- 查询常数用单引号
+```
+
+**去除重复行**
+```sql 
+SELECT DISTINCT department_id FROM employees;
+
+SELECT salary, DISTINCT department_id -- 错误
+FROM employees;
+
+SELECT DISTINCT salary, department_id --正确但是意义不大，双重去重
+FROM employees;
+```
+
+**WHERE条件判断**
+```sql 
+SELECT * FROM employees
+WHERE department_id = 90;
+```
+
+**SQL 在 Windows 上不区分大小写，但是标准SQL语言仍然区分大小写**
