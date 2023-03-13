@@ -261,6 +261,20 @@ function sum(){
 add=$(sum 1 2)
 ```
 
+## Windows批处理
+```bat
+Rem 添加注释
+@echo off 关闭脚本显示
+%1 获取第一个参数
+set workdir=目录名 
+%workdir% 获取变量值
+&& 分隔两个不同的命令
+cmd /k 执行完脚本时不关闭cmd窗口
+cmd /c 关闭窗口
+cd /d 改变工作目录
+cd 进入目录
+```
+
 
 **参考链接**
 

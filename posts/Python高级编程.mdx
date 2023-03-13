@@ -1,0 +1,132 @@
+---
+title: Python高级编程
+description: " Python高级编程"
+date: Feb 24 2023
+---
+# Python高级编程
+## 多任务
+多任务：计算机同时执行多个多个任务，提高CPU的利用效率
+* 并发：一段时间内交替执行多个任务
+* 并行：一段时间内同时执行多个任务
+### 进程
+Python中使用多进程来实现多任务，使用多进程可以大大提高程序的执行效率。
+```python   
+import multiprocessing
+//导入多进程包
+def func1():
+    print("func1")
+
+def func2():
+    print("func2")
+
+if __name__ == '__main__':
+
+    func1_pro = multiprocessing.Process(target=func1())
+    func2_pro = multiprocessing.Process(target=func2())
+//创建进程
+    func1_pro.start()
+    func2_pro.start()
+//启动进程
+```
+* 创建子进程会对父进程资源进行拷贝
+* 进程之间不共享全局变量。
+* 主进程会等待所有的子进程执行结束再结束
+```python
+子进程对象.daemon = True # 设置守护主进程
+子进程对象.terminate() # 销毁子进程
+# 以上两种方式均能保证主进程结束后子进程销毁
+```
+```python
+import os
+os.getpid()# 获取进程号
+os.getppid()# 获取父进程号
+```
+### 线程
+**进程**是分配资源的最小单位，**线程**是程序执行的最小单位。
+
+线程之间共享进程的资源
+```python
+coding_thread = threading.Thread(target=coding)
+music_thread = threading.Thread(target=music)
+
+coding_thread.start()
+music_thread.start()
+```
+主线程和子线程独立运行，默认互不影响，这不是我们想要的。
+
+设置守护主进程
+```python 
+work_thread = threading.Thread(target=coding, daemon=True) # 创建线程时，设置守护
+work_thread。setDaemon(True) # 创建完成时设置为True
+```
+这样，主线程结束时，子线程会随之销毁。
+
+**线程之间共享全局变量**，因为线程之间同时使用进程中的资源。
+
+线程的执行是无序的，由CPU的调度决定。因此，线程之间在共享全局变量时可能出现错误。使用线程同步可以解决。
+
+**互斥锁**
+互斥锁类似一种通行证，持有互斥锁的线程才可以对共享数据进行操作，没有互斥锁的人只能等待互斥锁。
+```python
+# 创建锁
+mutex = threading.Lock()
+# 上锁
+mutex.acquire()
+# 解锁
+mutex.release()
+```
+**进程与线程的对比**
+* 线程依附于进程
+* 一个进程默认提供一条线程，进程可以创建多个线程
+* 进程之间不共享全局变量，线程之间共享全局变量，但可能会遇到资源竞争的问题
+* 创建进程的资源比创建线程的资源开销大
+## 网络编程
+网络编程：编写基于网络通信的软件或程序。
+socket：程序之间通信的工具
+TCP：传输控制协议
+* 面向连接
+* 可靠传输
+```python
+# python 编码转换
+bytes.decode(encoding= "utf-8")
+str.encode(encoding= "utf-8")
+```
+**TCP客户端程序开发流程**
+1. 创建客户端socket对象
+2. 和服务端socket建立连接
+3. 发送数据
+4. 接受数据
+5. 关闭客户端socket
+
+
+**TCP服务端程序开发流程**
+## Python连接数据库
+## 网页基础
+## Django + ajax
+
+--->机器学习
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(全文完)
+(本文不定时更新)
+以上内容只代表个人观点，如果对你有所帮助，[点击这里给我一个小小的star](https://github.com/gledfish/blog)
+
+如果有任何问题欢迎随时联系我进行批评指正：2076577077@qq.com  
+ 
+我是gled fish, [点击这里来到我的博客网站：](https://gledfish.netlify.app/)
+---
+---
+尊重作者原创, 转载请注明作者和出处，请勿用于任何商业用途。
